@@ -1,113 +1,124 @@
-# 🚀 Full Guide to Using Claude Code
+# 🚀 Claude Code 完全使用指南
 
-Everything you need to know to crush building anything with Claude Code! This guide takes you from installation through advanced context engineering, subagents, hooks, and parallel agent workflows.
+了解使用 Claude Code 构建任何内容所需的一切！本指南将带你从安装到高级上下文工程、子代理、钩子和并行代理工作流。
 
-## 📋 Prerequisites
+## 📋 前提条件
 
-- Terminal/Command line access
-- Node.js installed (for Claude Code installation)
-- GitHub account (for GitHub CLI integration)
-- Text editor (VS Code recommended)
+- 终端/命令行访问
+- 已安装 Node.js（用于 Claude Code 安装）
+- GitHub 账户（用于 GitHub CLI 集成）
+- 文本编辑器（推荐使用 VS Code）
 
-## 🔧 Installation
+## 🔧 安装
 
 **macOS/Linux:**
+
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
 **Windows (WSL recommended):**
-See detailed instructions in [install_claude_code_windows.md](./install_claude_code_windows.md)
+参见 [install_claude_code_windows.md](./install_claude_code_windows.md) 中的详细说明
 
-**Verify installation:**
+**验证安装:**
+
 ```bash
 claude --version
 ```
 
 ---
 
-## ✅ TIP 1: CREATE AND OPTIMIZE CLAUDE.md FILES
+## ✅ 提示 1：创建和优化 CLAUDE.md 文件
 
-Set up context files that Claude automatically pulls into every conversation, containing project-specific information, commands, and guidelines.
+设置上下文文件，Claude 会在每次对话中自动拉取这些文件，其中包含项目特定信息、命令和指南。
 
 ```bash
 mkdir your-folder-name && cd your-folder-name
 claude
 ```
 
-Use the built-in command:
+使用内置命令：
+
 ```
 /init
 ```
 
-Or create your own CLAUDE.md file based on the template in this repository. See `CLAUDE.md` for a Python specific example structure that includes:
-- Project awareness and context rules
-- Code structure guidelines
-- Testing requirements
-- Task completion workflow
-- Style conventions
-- Documentation standards
+或根据此仓库中的模板创建自己的 CLAUDE.md 文件。参见 `CLAUDE.md` 了解 Python 特定示例结构，其中包含：
 
-### Advanced Prompting Techniques
+- 项目认知和上下文规则
+- 代码结构指南
+- 测试要求
+- 任务完成工作流
+- 风格规范
+- 文档标准
 
-**Power Keywords**: Claude responds to certain keywords with enhanced behavior (information dense keywords):
-- **IMPORTANT**: Emphasizes critical instructions that should not be overlooked
-- **Proactively**: Encourages Claude to take initiative and suggest improvements
-- **Ultra-think**: Can trigger more thorough analysis (use sparingly)
+### 高级提示工程技术
 
-**Essential Prompt Engineering Tips**:
-- Avoid prompting for "production-ready" code - this often leads to over-engineering
-- Prompt Claude to write scripts to check its work: "After implementing, create a validation script"
-- Avoid backward compatibility unless specifically needed - Claude tends to preserve old code unnecessarily
-- Focus on clarity and specific requirements rather than vague quality descriptors
+**关键词**：Claude 对某些关键词有增强行为响应（信息密集型关键词）：
 
-### File Placement Strategies
+- **IMPORTANT**：强调不应被忽视的关键指令
+- **Proactively**：鼓励 Claude 主动提出改进建议
+- **Ultra-think**：可触发更彻底的分析（谨慎使用）
 
-Claude automatically reads CLAUDE.md files from multiple locations:
+**基本提示工程技巧**：
+
+- 避免提示"生产就绪"代码 - 这通常会导致过度工程化
+- 提示 Claude 编写脚本检查其工作："实现后，创建验证脚本"
+- 除非特别需要，避免向后兼容 - Claude 往往会不必要地保留旧代码
+- 专注于清晰和具体的要求，而非模糊的质量描述
+
+### 文件放置策略
+
+Claude 自动从多个位置读取 CLAUDE.md 文件：
 
 ```bash
-# Root of repository (most common)
-./CLAUDE.md              # Checked into git, shared with team
-./CLAUDE.local.md        # Local only, add to .gitignore
+# 仓库根目录（最常见）
+./CLAUDE.md              # 提交到 git，与团队共享
+./CLAUDE.local.md        # 仅本地使用，添加到 .gitignore
 
-# Parent directories (for monorepos)
-root/CLAUDE.md           # General project info
-root/frontend/CLAUDE.md  # Frontend-specific context
-root/backend/CLAUDE.md   # Backend-specific context
+# 父目录（用于单体仓库）
+root/CLAUDE.md           # 通用项目信息
+root/frontend/CLAUDE.md  # 前端特定上下文
+root/backend/CLAUDE.md   # 后端特定上下文
 
-# Reference external files for flexibility
-echo "Follow best practices in: ~/company/engineering-standards.md" > CLAUDE.md
+# 引用外部文件以获得灵活性
+echo "遵循最佳实践：~/company/engineering-standards.md" > CLAUDE.md
 ```
 
-**Pro Tip**: Many teams keep their CLAUDE.md minimal and reference a shared standards document. This makes it easy to:
-- Switch between AI coding assistants
-- Update standards without changing every project
-- Share best practices across teams
+**专业提示**：许多团队保持 CLAUDE.md 简洁并引用共享标准文档。这使得：
 
-*Note: While Claude Code reads CLAUDE.md automatically, other AI coding assistants can use similar context files (such as .cursorrules for Cursor)*
+- 可以在 AI 编码助手之间切换
+- 无需更改每个项目即可更新标准
+- 在团队之间共享最佳实践
+
+*注意：虽然 Claude Code 自动读取 CLAUDE.md，但其他 AI 编码助手可以使用类似的上下文文件（例如 Cursor 的 .cursorrules）*
 
 ---
 
-## ✅ TIP 2: SET UP PERMISSION MANAGEMENT
+## ✅ 提示 2：设置权限管理
 
-Configure tool allowlists to streamline development while maintaining security for file operations and system commands.
+配置工具允许列表，以简化开发同时维护文件操作和系统命令的安全性。
 
-**Method 1: Interactive Allowlist**
-When Claude asks for permission, select "Always allow" for common operations.
+**方法 1：交互式允许列表**
+当 Claude 请求权限时，为常见操作选择"始终允许"。
 
-**Method 2: Use /permissions command**
+**方法 2：使用 /permissions 命令**
+
 ```
 /permissions
 ```
-Then add:
-- `Edit` (for file edits)
-- `Bash(git commit:*)` (for git commits)
-- `Bash(npm:*)` (for npm commands)
-- `Read` (for reading files)
-- `Write` (for creating files)
 
-**Method 3: Create project settings file**
-Create `.claude/settings.local.json`:
+然后添加：
+
+- `Edit`（用于文件编辑）
+- `Bash(git commit:*)`（用于 git 提交）
+- `Bash(npm:*)`（用于 npm 命令）
+- `Read`（用于读取文件）
+- `Write`（用于创建文件）
+
+**方法 3：创建项目设置文件**
+创建 `.claude/settings.local.json`：
+
 ```json
 {
   "allowedTools": [
@@ -123,265 +134,282 @@ Create `.claude/settings.local.json`:
 }
 ```
 
-**Security Best Practices**:
-- Never allow `Bash(rm -rf:*)` or similar destructive commands
-- Use specific command patterns rather than `Bash(*)`
-- Review permissions regularly
-- Use different permission sets for different projects
+**安全最佳实践**：
 
-*Note: All AI coding assistants have permission management - some built-in, others require manual approval for each action.*
+- 切勿允许 `Bash(rm -rf:*)` 或类似破坏性命令
+- 使用特定命令模式而非 `Bash(*)`
+- 定期审查权限
+- 为不同项目使用不同的权限集
+
+*注意：所有 AI 编码助手都有权限管理 - 有些内置，有些需要手动批准每个操作。*
 
 ---
 
-## ✅ TIP 3: MASTER CUSTOM SLASH COMMANDS
+## ✅ 提示 3：掌握自定义斜杠命令
 
-Slash commands are the key to adding your own workflows into Claude Code. They live in `.claude/commands/` and enable you to create reusable, parameterized workflows.
+斜杠命令是将您自己的工作流添加到 Claude Code 的关键。它们位于 `.claude/commands/` 中，使您能够创建可重用的、参数化的工作流。
 
-### Built-in Commands
-- `/init` - Generate initial CLAUDE.md
-- `/permissions` - Manage tool permissions
-- `/clear` - Clear context between tasks
-- `/agents` - Manage subagents
-- `/help` - Get help with Claude Code
+### 内置命令
 
-### Custom Command Example
+- `/init` - 生成初始 CLAUDE.md
+- `/permissions` - 管理工具权限
+- `/clear` - 在任务之间清除上下文
+- `/agents` - 管理子代理
+- `/help` - 获取 Claude Code 帮助
 
-**Repository Analysis**:
+### 自定义命令示例
+
+**仓库分析**：
+
 ```
 /primer
 ```
-Performs comprehensive repository analysis to prime Claude Code on your codebase so you can start implemention fixes or new features and it has all the necessary context to do so.
 
-### Creating Your Own Commands
+执行全面的仓库分析，为 Claude Code 提供必要的上下文，以便您可以开始实施修复或新功能。
 
-1. Create a markdown file in `.claude/commands/`:
+### 创建您自己的命令
+
+1. 在 `.claude/commands/` 中创建 markdown 文件：
+
 ```markdown
 # Command: analyze-performance
 
-Analyze the performance of the file specified in $ARGUMENTS.
+分析 $ARGUMENTS 中指定文件的性能。
 
 ## Steps:
-1. Read the file at path: $ARGUMENTS
-2. Identify performance bottlenecks
-3. Suggest optimizations
-4. Create a benchmark script
+1. 读取路径处的文件：$ARGUMENTS
+2. 识别性能瓶颈
+3. 建议优化方案
+4. 创建基准测试脚本
 ```
 
-2. Use the command:
+2. 使用命令：
+
 ```
 /analyze-performance src/heavy-computation.js
 ```
 
-Commands can use `$ARGUMENTS` to receive parameters and can invoke any of Claude's tools.
+命令可以使用 `$ARGUMENTS` 接收参数并调用 Claude 的任何工具。
 
-*Note: Other AI coding assistants can use these commands as regular prompts - just copy the command content and paste it with your arguments.*
+*注意：其他 AI 编码助手可以将这些命令用作常规提示 - 只需复制命令内容并粘贴参数。*
 
 ---
 
-## ✅ TIP 4: INTEGRATE MCP SERVERS
+## ✅ 提示 4：集成 MCP 服务器
 
-Connect Claude Code to Model Context Protocol (MCP) servers for enhanced functionality. Learn more in the [MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp).
+将 Claude Code 连接到 Model Context Protocol (MCP) 服务器以获得增强功能。在 [MCP 文档](https://docs.anthropic.com/en/docs/claude-code/mcp) 中了解更多信息。
 
-**Add Serena MCP Server** - The most powerful coding toolkit:
+**添加 Serena MCP 服务器** - 最强大的编码工具包：
 
-Make sure you [install uvx](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) first. Here is how you do that in WSL with Windows:
+确保首先[安装 uvx](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)。在带有 Windows 的 WSL 中操作方法如下：
+
 ```bash
 sudo snap install astral-uv --classic
 ```
 
-Then add Serena using the command:
+然后使用以下命令添加 Serena：
+
 ```bash
-# Install Serena for semantic code analysis and editing
-claude mcp add serena -- uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant --project $(pwd)
+# 安装 Serena 用于语义代码分析和编辑
+claude mcp add serena -- uvx --from git+  https://github.com/oraios/serena   serena start-mcp-server --context ide-assistant --project $(pwd)
 ```
 
-[Serena](https://github.com/oraios/serena) transforms Claude Code into a fully-featured coding agent with:
-- Semantic code retrieval and analysis
-- Advanced editing capabilities using Language Server Protocol (LSP)
-- Support for Python, TypeScript/JavaScript, PHP, Go, Rust, C/C++, Java
-- Free and open-source alternative to subscription-based coding assistants
+[Serena](https://github.com/oraios/serena) 将 Claude Code 转变为功能齐全的编码代理，具有：
 
-**Manage MCP servers:**
+- 语义代码检索和分析
+- 使用 Language Server Protocol (LSP) 的高级编辑功能
+- 支持 Python、TypeScript/JavaScript、PHP、Go、Rust、C/C++、Java
+- 订阅式编码助手的免费开源替代方案
+
+**管理 MCP 服务器**：
+
 ```bash
-# List all configured servers
+# 列出所有配置的服务器
 claude mcp list
 
-# Get details about a specific server
+# 获取特定服务器的详细信息
 claude mcp get serena
 
-# Remove a server
+# 移除服务器
 claude mcp remove serena
 ```
 
-**Coming Soon**: Archon V2 (HUGE Overhaul) - A comprehensive knowledge and task management backbone for AI coding assistants - enabling true human-AI collaboration on code for the first time.
+**即将推出**：Archon V2（重大更新）- AI 编码助手的综合知识和任务管理骨干 - 首次实现真正的人机协作编码。
 
-*Note: MCP is integrated with every major AI coding assistant and the servers are managed in a very similar way.*
+*注意：MCP 与每个主要的 AI 编码助手集成，服务器以非常相似的方式管理。*
 
 ---
 
-## ✅ TIP 5: CONTEXT ENGINEERING WITH EXAMPLES
+## ✅ 提示 5：使用示例进行上下文工程
 
-Transform your development workflow from simple prompting to comprehensive context engineering - providing AI with all the information needed for end-to-end implementation.
+将您的开发工作流从简单提示转变为全面的上下文工程 - 为 AI 提供端到端实施所需的所有信息。
 
-### Quick Start
+### 快速入门
 
-The PRP (Product Requirements Prompt) framework is a simple 3-step strategy for context engineering:
+PRP（产品需求提示）框架是一种简单的 3 步策略，用于上下文工程：
 
 ```bash
-# 1. Define your requirements with examples and context
-# Edit INITIAL.md to include example code and patterns
+# 1. 使用示例和上下文定义需求
+# 编辑 INITIAL.md 以包含示例代码和模式
 
-# 2. Generate a comprehensive PRP
+# 2. 生成全面的 PRP
 /generate-prp INITIAL.md
 
-# 3. Execute the PRP to implement your feature
+# 3. 执行 PRP 以实现您的功能
 /execute-prp PRPs/your-feature-name.md
 ```
 
-### Defining Your Requirements
+### 定义您的需求
 
-Your INITIAL.md should always include:
+您的 INITIAL.md 应始终包含：
 
 ```markdown
 ## FEATURE
-Build a user authentication system
+构建用户认证系统
 
 ## EXAMPLES
-- Authentication flow: `examples/auth-flow.js`
-- Similar API endpoint: `src/api/users.js` 
-- Database schema pattern: `src/models/base-model.js`
-- Validation approach: `src/validators/user-validator.js`
+- 认证流程：`examples/auth-flow.js`
+- 类似 API 端点：`src/api/users.js` 
+- 数据库模式模式：`src/models/base-model.js`
+- 验证方法：`src/validators/user-validator.js`
 
 ## DOCUMENTATION
-- JWT library docs: https://github.com/auth0/node-jsonwebtoken
-- Our API standards: `docs/api-guidelines.md`
+- JWT 库文档：https://github.com/auth0/node-jsonwebtoken  
+- 我们的 API 标准：`docs/api-guidelines.md`
 
 ## OTHER CONSIDERATIONS
-- Use existing error handling patterns
-- Follow our standard response format
-- Include rate limiting
+- 使用现有错误处理模式
+- 遵循我们的标准响应格式
+- 包括速率限制
 ```
 
-### Critical PRP Strategies
+### 关键 PRP 策略
 
-**Examples**: The most powerful tool - provide code snippets, similar features, and patterns to follow
+**示例**：最强大的工具 - 提供代码片段、类似功能和要遵循的模式
 
-**Validation Gates**: Ensure comprehensive testing and iteration until all tests pass
+**验证门**：确保全面测试并在所有测试通过后迭代
 
-**No Vibe Coding**: Validate PRPs before executing them and the code after execution!
+**无氛围编码**：在执行 PRP 之前和执行代码后进行验证！
 
-The more specific examples you provide, the better Claude can match your existing patterns and style.
+您提供的示例越具体，Claude 就能更好地匹配您现有的模式和风格。
 
-*Note: Context engineering works with any AI coding assistant - the PRP framework and example-driven approach are universal principles.*
+*注意：上下文工程适用于任何 AI 编码助手 - PRP 框架和基于示例的方法是通用原则。*
 
 ---
 
-## ✅ TIP 6: LEVERAGE SUBAGENTS FOR SPECIALIZED TASKS
+## ✅ 提示 6：利用子代理处理特定任务
 
-Subagents are specialized AI assistants that operate in separate context windows with focused expertise. They enable Claude to delegate specific tasks to experts, improving quality and efficiency.
+子代理是专门的 AI 助手，它们在单独的上下文窗口中运行，具有专注的专业知识。它们使 Claude 能够将特定任务委托给专家，提高质量和效率。
 
-### Understanding Subagents
+### 了解子代理
 
-Each subagent:
-- Has its own context window (no pollution from main conversation)
-- Operates with specialized system prompts
-- Can be limited to specific tools
-- Works autonomously on delegated tasks
+每个子代理：
 
-### Example Subagents in This Repository
+- 拥有自己的上下文窗口（不会污染主对话）
+- 使用专门的系统提示运行
+- 可以限制为特定工具
+- 在委托任务上自主工作
 
-**Documentation Manager** (`.claude/agents/documentation-manager.md`):
-- Automatically updates docs when code changes
-- Ensures README accuracy
-- Maintains API documentation
-- Creates migration guides
+### 本仓库中的示例子代理
 
-**Validation Gates** (`.claude/agents/validation-gates.md`):
-- Runs all tests after changes
-- Iterates on fixes until tests pass
-- Enforces code quality standards
-- Never marks tasks complete with failing tests
+**文档管理器** (`.claude/agents/documentation-manager.md`):
 
-### Creating Your Own Subagents
+- 在代码更改时自动更新文档
+- 确保 README 准确性
+- 维护 API 文档
+- 创建迁移指南
 
-1. Use the `/agents` command or create a file in `.claude/agents/`:
+**验证门** (`.claude/agents/validation-gates.md`):
+
+- 在更改后运行所有测试
+- 迭代修复直到测试通过
+- 强制执行代码质量标准
+- 永远不会在测试失败时标记任务完成
+
+### 创建您自己的子代理
+
+1. 使用 `/agents` 命令或在 `.claude/agents/` 中创建文件：
 
 ```markdown
 ---
 name: security-auditor
-description: "Security specialist. Proactively reviews code for vulnerabilities and suggests improvements."
+description: "安全专家。主动审查代码中的漏洞并提出改进建议。"
 tools: Read, Grep, Glob
 ---
 
-You are a security auditing specialist focused on identifying and preventing security vulnerabilities...
+您是一位专注于识别和预防安全漏洞的安全审计专家...
 
-## Core Responsibilities
-1. Review code for OWASP Top 10 vulnerabilities
-2. Check for exposed secrets or credentials
-3. Validate input sanitization
-4. Ensure proper authentication/authorization
+## 核心职责
+1. 审查代码中的 OWASP Top 10 漏洞
+2. 检查暴露的机密或凭据
+3. 验证输入清理
+4. 确保适当的认证/授权
 ...
 ```
 
-### Subagent Best Practices
+### 子代理最佳实践
 
-**1. Focused Expertise**: Each subagent should have one clear specialty
+**1. 专注专业知识**：每个子代理应有一个明确的专业领域
 
-**2. Proactive Descriptions**: Use "proactively" in descriptions for automatic invocation:
+**2. 主动描述**：在描述中使用"proactively"以实现自动调用：
+
 ```yaml
-description: "Code reviewer. Proactively reviews all code changes for quality."
+description: "代码审查员。主动审查所有代码更改的质量。"
 ```
 
-**3. Tool Limitations**: Only give subagents the tools they need:
+**3. 工具限制**：仅向子代理提供所需的工具：
+
 ```yaml
-tools: Read, Grep  # No write access for review-only agents
+tools: Read, Grep  # 仅用于只读审查的代理
 ```
 
-**4. Information Flow Design**: Understand how information flows from primary agent → subagent → primary agent. The subagent description is crucial because it tells your primary Claude Code agent when and how to use it. Include clear instructions in the description for how the primary agent should prompt this subagent.
+**4. 信息流设计**：了解信息如何从主代理 → 子代理 → 主代理流动。子代理描述至关重要，因为它告诉您的主 Claude Code 代理何时以及如何使用它。在描述中包含关于主代理应如何提示此子代理的明确说明。
 
-**5. One-Shot Context**: Subagents don't have full conversation history - they receive a single prompt from your primary agent. Design your subagents with this limitation in mind.
+**5. 一次性上下文**：子代理没有完整的对话历史 - 它们从您的主代理接收单个提示。在设计子代理时考虑此限制。
 
-Learn more in the [Subagents documentation](https://docs.anthropic.com/en/docs/claude-code/sub-agents).
+在 [子代理文档](https://docs.anthropic.com/en/docs/claude-code/sub-agents) 中了解更多信息。
 
-*Note: While other AI assistants don't have formal subagents, you can achieve similar results by creating specialized prompts and switching between different conversation contexts.*
+*注意：虽然其他 AI 助手没有正式的子代理，但您可以通过创建专门的提示并在不同对话上下文之间切换来实现类似结果。*
 
 ---
 
-## ✅ TIP 7: AUTOMATE WITH HOOKS
+## ✅ 提示 7：使用钩子进行自动化
 
-Hooks provide deterministic control over Claude Code's behavior through user-defined shell commands that execute at predefined lifecycle events.
+钩子通过用户定义的 shell 命令提供对 Claude Code 行为的确定性控制，这些命令在预定义的生命周期事件中执行。
 
-### Available Hook Events
+### 可用钩子事件
 
-Claude Code provides several predefined actions you can hook into:
-- **PreToolUse**: Before tool execution (can block operations)
-- **PostToolUse**: After successful tool completion  
-- **UserPromptSubmit**: When user submits a prompt
-- **SubagentStop**: When a subagent completes its task
-- **Stop**: When the main agent finishes responding
-- **SessionStart**: At session initialization
-- **PreCompact**: Before context compaction
-- **Notification**: During system notifications
+Claude Code 提供了几个可以挂钩的预定义操作：
 
-Learn more in the [Hooks documentation](https://docs.anthropic.com/en/docs/claude-code/hooks).
+- **PreToolUse**: 在工具执行之前（可以阻止操作）
+- **PostToolUse**: 在工具成功完成之后
+- **UserPromptSubmit**: 当用户提交提示时
+- **SubagentStop**: 当子代理完成其任务时
+- **Stop**: 当主代理完成响应时
+- **SessionStart**: 在会话初始化时
+- **PreCompact**: 在上下文压缩之前
+- **Notification**: 在系统通知期间
 
-### Example Hook: Tool Usage Logging
+在 [钩子文档](https://docs.anthropic.com/en/docs/claude-code/hooks) 中了解更多信息。
 
-This repository includes a simple hook example in `.claude/hooks/`:
+### 示例钩子：工具使用日志
 
-**log-tool-usage.sh** - Logs all tool usage for tracking and debugging:
+此仓库在 `.claude/hooks/` 中包含一个简单的钩子示例：
+
+**log-tool-usage.sh** - 记录所有工具使用情况以进行跟踪和调试：
+
 ```bash
 #!/bin/bash
-# Logs tool usage with timestamps
-# Creates .claude/logs/tool-usage.log
-# No external dependencies required
+# 记录带有时间戳的工具使用情况
+# 创建 .claude/logs/tool-usage.log
+# 无需外部依赖
 ```
 
-### Setting Up Hooks
+### 设置钩子
 
-1. **Create hook script** in `.claude/hooks/`
-2. **Make it executable**: `chmod +x your-hook.sh`
-3. **Add to settings** in `.claude/settings.local.json`:
+1. **在 `.claude/hooks/` 中创建钩子脚本**
+2. **使其可执行**：`chmod +x your-hook.sh`
+3. **在 `.claude/settings.local.json` 中添加到设置**：
 
 ```json
 {
@@ -401,173 +429,180 @@ This repository includes a simple hook example in `.claude/hooks/`:
 }
 ```
 
-Hooks ensure certain actions always happen, rather than relying on the AI to remember - perfect for logging, security validations, and build triggers.
+钩子确保某些操作始终发生，而不是依赖 AI 记住 - 非常适合日志记录、安全验证和构建触发。
 
-*Note: Other AI assistants don't have hooks (though Kiro does!), I can almost guarantee they're coming soon for everyone else.*
+*注意：其他 AI 助手没有钩子（尽管 Kiro 有！），我几乎可以保证他们很快也会为其他人添加。*
 
 ---
 
-## ✅ TIP 8: GITHUB CLI INTEGRATION
+## ✅ 提示 8：GitHub CLI 集成
 
-Set up the GitHub CLI to enable Claude to interact with GitHub for issues, pull requests, and repository management.
+设置 GitHub CLI 以使 Claude 能够与 GitHub 交互，处理问题、拉取请求和仓库管理。
 
 ```bash
-# Install GitHub CLI
-# Visit: https://github.com/cli/cli#installation
+# 安装 GitHub CLI
+# 访问：https://github.com/cli/cli#installation
 
-# Authenticate
+# 认证
 gh auth login
 
-# Verify setup
+# 验证设置
 gh repo list
 ```
 
-### Custom GitHub Commands
+### 自定义 GitHub 命令
 
-Use the `/fix-github-issue` command for automated fixes:
+使用 `/fix-github-issue` 命令进行自动修复：
 
 ```
 /fix-github-issue 123
 ```
 
-This will:
-1. Fetch issue details
-2. Analyze the problem
-3. Search relevant code
-4. Implement the fix
-5. Run tests
-6. Create a PR
+这将：
 
-*Note: GitHub CLI works with any AI coding assistant - just install it and the AI can use `gh` commands to interact with your repositories.*
+1. 获取问题详细信息
+2. 分析问题
+3. 搜索相关代码
+4. 实施修复
+5. 运行测试
+6. 创建 PR
+
+*注意：GitHub CLI 适用于任何 AI 编码助手 - 只需安装它，AI 就可以使用 `gh` 命令与您的仓库交互。*
 
 ---
 
-## ✅ TIP 9: SAFE YOLO MODE WITH DEV CONTAINERS
+## ✅ 提示 9：使用开发容器的 SAFE YOLO 模式
 
-Allow Claude Code to perform any action while maintaining safety through containerization. This enables rapid development without destructive behavior on your host machine.
+允许 Claude Code 执行任何操作，同时通过容器化维护安全性。这使得可以在不对主机系统造成破坏性行为的情况下进行快速开发。
 
-**Prerequisites:**
-- Install [Docker](https://www.docker.com/) 
-- VS Code (or compatible editors)
+**前提条件**：
 
-**Security Features:**
-- Network isolation with whitelist
-- No access to host filesystem
-- Restricted outbound connections
-- Safe experimentation environment
+- 安装 [Docker](https://www.docker.com/)
+- VS Code（或兼容编辑器）
 
-**Setup Process:**
+**安全功能**：
 
-1. **Open in VS Code** and press `F1`
-2. **Select** "Dev Containers: Reopen in Container"
-3. **Wait** for container build
-4. **Open terminal** (`Ctrl+J`)
-5. **Authenticate** Claude Code in container
-6. **Run in YOLO mode**:
+- 网络隔离与白名单
+- 无主机文件系统访问权限
+- 限制出站连接
+- 安全实验环境
+
+**设置过程**：
+
+1. **在 VS Code 中打开**并按 `F1`
+2. **选择**"Dev Containers: Reopen in Container"
+3. **等待**容器构建
+4. **打开终端**（`Ctrl+J`）
+5. **在容器中认证** Claude Code
+6. **以 YOLO 模式运行**：
    ```bash
    claude --dangerously-skip-permissions
    ```
 
-**Why Use Dev Containers?**
-- Test dangerous operations safely
-- Experiment with system changes
-- Rapid prototyping
-- Consistent development environment
-- No fear of breaking your system
+**为什么使用开发容器**？
+
+- 安全测试危险操作
+- 实验系统更改
+- 快速原型设计
+- 一致的开发环境
+- 无需担心系统损坏
 
 ---
 
-## ✅ TIP 10: PARALLEL DEVELOPMENT WITH GIT WORKTREES
+## ✅ 提示 10：使用 GIT WORKTREES 进行并行开发
 
-Use Git worktrees to enable multiple Claude instances working on independent tasks simultaneously, or automate parallel implementations of the same feature.
+使用 Git worktrees 使多个 Claude 实例同时处理独立任务，或自动化同一功能的并行实现。
 
-### Manual Worktree Setup
+### 手动 Worktree 设置
 
 ```bash
-# Create worktrees for different features
+# 为不同功能创建 worktrees
 git worktree add ../project-auth feature/auth
 git worktree add ../project-api feature/api
 
-# Launch Claude in each worktree
+# 在每个 worktree 中启动 Claude
 cd ../project-auth && claude  # Terminal 1
 cd ../project-api && claude   # Terminal 2
 ```
 
-### Automated Parallel Agents
+### 自动化并行代理
 
-AI coding assistants are non-deterministic. Running multiple attempts increases success probability and provides implementation options.
+AI 编码助手是非确定性的。运行多次尝试可提高成功率并提供实现选项。
 
-**Setup parallel worktrees:**
+**设置并行 worktrees**：
+
 ```bash
 /prep-parallel user-system 3
 ```
 
-**Execute parallel implementations:**
-1. Create a plan file (`plan.md`)
-2. Run parallel execution:
+**执行并行实现**：
+
+1. 创建计划文件（`plan.md`）
+2. 运行并行执行：
 
 ```bash
 /execute-parallel user-system plan.md 3
 ```
 
-**Select the best implementation:**
+**选择最佳实现**：
+
 ```bash
-# Review results
+# 查看结果
 cat trees/user-system-*/RESULTS.md
 
-# Test each implementation
+# 测试每个实现
 cd trees/user-system-1 && npm test
 
-# Merge the best
+# 合并最佳方案
 git checkout main
 git merge user-system-2
 ```
 
-### Benefits
+### 优势
 
-- **No Conflicts**: Each instance works in isolation
-- **Multiple Approaches**: Compare different implementations
-- **Quality Gates**: Only consider implementations where tests pass
-- **Easy Integration**: Merge the best solution
-
----
-
-## 🎯 Quick Command Reference
-
-| Command | Purpose |
-|---------|---------|
-| `/init` | Generate initial CLAUDE.md |
-| `/permissions` | Manage tool permissions |
-| `/clear` | Clear context between tasks |
-| `/agents` | Create and manage subagents |
-| `/primer` | Analyze repository structure |
-| `ESC` | Interrupt Claude |
-| `Shift+Tab` | Enter planning mode |
-| `/generate-prp INITIAL.md` | Create implementation blueprint |
-| `/execute-prp PRPs/feature.md` | Implement from blueprint |
-| `/prep-parallel [feature] [count]` | Setup parallel worktrees |
-| `/execute-parallel [feature] [plan] [count]` | Run parallel implementations |
-| `/fix-github-issue [number]` | Auto-fix GitHub issues |
-| `/prep-parallel [feature] [count]` | Setup parallel worktrees |
-| `/execute-parallel [feature] [plan] [count]` | Run parallel implementations |
+- **无冲突**：每个实例独立工作
+- **多种方法**：比较不同实现
+- **质量门**：仅考虑测试通过的实现
+- **轻松集成**：合并最佳方案
 
 ---
 
-## 📚 Additional Resources
+## 🎯 快速命令参考
 
-- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code)
-- [Claude Code Best Practices](https://www.anthropic.com/engineering/claude-code-best-practices)
-- [MCP Server Library](https://github.com/modelcontextprotocol)
+| Command                                        | Purpose              |
+| ---------------------------------------------- | -------------------- |
+| `/init`                                      | 生成初始 CLAUDE.md   |
+| `/permissions`                               | 管理工具权限         |
+| `/clear`                                     | 在任务之间清除上下文 |
+| `/agents`                                    | 创建和管理子代理     |
+| `/primer`                                    | 分析仓库结构         |
+| `ESC`                                        | 中断 Claude          |
+| `Shift+Tab`                                  | 进入规划模式         |
+| `/generate-prp INITIAL.md`                   | 创建实现蓝图         |
+| `/execute-prp PRPs/feature.md`               | 从蓝图实现           |
+| `/prep-parallel [feature] [count]`           | 设置并行 worktrees   |
+| `/execute-parallel [feature] [plan] [count]` | 运行并行实现         |
+| `/fix-github-issue [number]`                 | 自动修复 GitHub 问题 |
+| `/prep-parallel [feature] [count]`           | 设置并行 worktrees   |
+| `/execute-parallel [feature] [plan] [count]` | 运行并行实现         |
 
 ---
 
-## 🚀 Next Steps
+## 📚 附加资源
 
-1. **Start Simple**: Set up CLAUDE.md and basic permissions
-2. **Add Slash Commands**: Create custom commands for your workflow
-3. **Install MCP Servers**: Add Serena for enhanced coding capabilities
-4. **Implement Subagents**: Add specialists for your tech stack
-5. **Configure Hooks**: Automate repetitive tasks
-6. **Try Parallel Development**: Experiment with multiple approaches
+- [Claude Code 文档](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Code 最佳实践](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [MCP 服务器库](https://github.com/modelcontextprotocol)
 
-Remember: Claude Code is most powerful when you provide clear context, specific examples, and comprehensive validation. Happy coding! 🎉
+---
+
+## 🚀 下一步
+
+1. **简单开始**：设置 CLAUDE.md 和基本权限
+2. **添加斜杠命令**：为您的工作流创建自定义命令
+3. **安装 MCP 服务器**：添加 Serena 以增强编码能力
+4. **实现子代理**：为您的技术栈添加专家
+5. **配置钩子**：自动化重复任务
+6. **尝试并行开发**：尝试多种方法
+
+记住：当您提供清晰的上下文、具体的示例和全面的验证时，Claude Code 最为强大。快乐编码！🎉

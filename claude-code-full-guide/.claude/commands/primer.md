@@ -1,16 +1,29 @@
-# Prime Context for Claude Code
+# Claude Code 项目分析
 
-Use the command `tree` to get an understanding of the project structure.
+## 项目结构
 
-Start with reading the CLAUDE.md file if it exists to get an understanding of the project.
+Claude Code 项目采用标准的代码库结构，通过目录可视化来创建标准化上下文。 项目通常包含一个 `.claude` 目录用于存放配置文件，该目录位于项目根目录中。 当使用 Claude Code 时，它会通过 `tree` 命令或类似方式获取项目结构理解，映射整个代码库。
 
-Read the README.md file to get an understanding of the project.
+## 项目目的和目标
 
-Read key files in the src/ or root directory
+Claude Code 的主要目的是在几秒钟内映射和解释整个代码库，它使用代理搜索技术来理解项目结构和依赖关系。 该项目旨在提供"深度编码，在终端速度"的体验，帮助开发者快速理解代码库。 其核心目标是通过加载仓库结构、设置开发上下文、建立项目目标来为 Claude 提供全面的项目理解。
 
-Explain back to me:
-- Project structure
-- Project purpose and goals
-- Key files and their purposes
-- Any important dependencies
-- Any important configuration files
+## 关键文件及其用途
+
+1. **CLAUDE.md** - 用于提供项目上下文的关键文件，帮助 Claude 理解项目结构和目标。
+2. **README.md** - 项目说明文件，提供项目概述，Claude 会读取此文件来获取项目基本信息。
+3. **.claude/settings.json** - 项目特定的设置文件，保存在项目目录中，可用于源代码控制并与团队共享。
+4. **用户级 settings.json** - 位于 `~/.claude/settings.json`，定义适用于所有项目的用户设置。
+5. **关键源代码文件** - 位于 src/ 或项目根目录中，Claude 会读取这些文件以理解项目实现细节。
+
+## 重要依赖项
+
+Claude Code 需要理解项目中的各种依赖关系，包括"Prime dependencies"（主要依赖项）。 具体依赖项会根据项目类型而变化，但 Claude 能够分析并解释这些依赖关系，帮助开发者理解项目架构。
+
+## 重要配置文件
+
+1. **.claude/settings.json** - 项目级配置文件，包含 API 密钥、模型选择、MCP 服务器设置、工具权限和多目录工作流配置。
+2. **全局配置文件** - 位于用户主目录的 `~/.claude/settings.json`，适用于所有项目。
+3. **配置指南** - Claude Code 提供全面的配置指南，涵盖 API 密钥设置、模型选择以及多目录工作流配置。
+
+Claude 在分析项目后，能够识别应用程序类型并提供针对性的建议，帮助开发者更高效地理解和操作代码库。 通过查看目录结构和读取关键文件，Claude 能够建立标准化的项目上下文，为开发者提供精准的编码支持。

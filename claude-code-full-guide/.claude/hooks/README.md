@@ -1,45 +1,49 @@
-# Claude Code Hooks Examples
+# Claude Code Hooks 示例
 
-This directory contains example hooks for Claude Code that demonstrate how to add deterministic behavior to your AI coding workflow.
+本目录包含Claude Code的示例钩子，展示了如何为您的AI编码工作流程添加确定性行为。
 
-## What are Hooks?
+## 什么是钩子？
 
-Hooks are user-defined shell commands that execute at specific points in Claude Code's lifecycle. They provide control over Claude's behavior, ensuring certain actions always happen rather than relying on the AI to choose to run them.
+钩子是用户定义的shell命令，它们在Claude Code的生命周期中特定点执行。它们控制Claude Code的行为，确保某些操作始终执行，而不是依赖AI选择运行它们。
 
-## Files in this Directory
+## 本目录中的文件
 
-1. **format-after-edit.sh** - A PostToolUse hook that automatically formats code after file edits
-2. **example-hook-config.json** - Example configuration showing how to set up various hooks
+1. **format-after-edit.sh** - 一个PostToolUse钩子，在文件编辑后自动格式化代码
+2. **example-hook-config.json** - 示例配置，展示如何设置各种钩子
 
-## How to Use These Hooks
+## 如何使用这些钩子
 
-### Option 1: Copy to Your Settings File
+### 选项1：复制到您的设置文件
 
-Copy the hooks configuration from `example-hook-config.json` to your Claude Code settings:
+将`example-hook-config.json`中的钩子配置复制到您的Claude Code设置：
 
-**Project-specific** (`.claude/settings.json`):
+**项目级** (`.claude/settings.json`):
+
 ```bash
-# Create settings file if it doesn't exist
+# 如果不存在则创建设置文件
 touch .claude/settings.json
 
-# Add hooks configuration from example-hook-config.json
+# 从example-hook-config.json添加钩子配置
 ```
 
-**User-wide** (`~/.claude/settings.json`):
+**用户级** (`~/.claude/settings.json`):
+
 ```bash
-# Apply hooks to all Claude Code sessions
+# 将钩子应用到所有Claude Code会话
 cp example-hook-config.json ~/.claude/settings.json
 ```
 
-### Option 2: Use Individual Hooks
+### 选项2：使用单个钩子
 
-1. Copy the hook script to your project:
+1. 将钩子脚本复制到项目中：
+
 ```bash
 cp format-after-edit.sh /your/project/.claude/hooks/
 chmod +x /your/project/.claude/hooks/format-after-edit.sh
 ```
 
-2. Add to your settings.json:
+2. 添加到settings.json：
+
 ```json
 {
   "hooks": {
@@ -58,52 +62,54 @@ chmod +x /your/project/.claude/hooks/format-after-edit.sh
 }
 ```
 
-## Available Hook Events
+## 可用钩子事件
 
-- **PreToolUse**: Before tool execution (can block tools)
-- **PostToolUse**: After successful tool completion
-- **UserPromptSubmit**: When user submits a prompt
-- **SubagentStop**: When a subagent completes
-- **Stop**: When main agent finishes responding
-- **Notification**: During system notifications
-- **PreCompact**: Before context compaction
-- **SessionStart**: At session initialization
+- **PreToolUse**: 工具执行前（可阻止工具）
+- **PostToolUse**: 工具成功完成后
+- **UserPromptSubmit**: 用户提交提示时
+- **SubagentStop**: 子代理完成时
+- **Stop**: 主代理响应结束时
+- **Notification**: 系统通知期间
+- **PreCompact**: 上下文压缩前
+- **SessionStart**: 会话初始化时
 
-## Creating Your Own Hooks
+## 创建您自己的钩子
 
-1. Write a shell script that:
-   - Reads JSON input from stdin
-   - Processes the input
-   - Returns JSON output (empty `{}` for success)
-   - Can return `{"action": "block", "message": "reason"}` to block operations
+1. 编写shell脚本：
+   - 从stdin读取JSON输入
+   - 处理输入
+   - 返回JSON输出（成功时返回空 `{}`）
+   - 可返回 `{"action": "block", "message": "原因"}`来阻止操作
+2. 使其可执行：
 
-2. Make it executable:
 ```bash
 chmod +x your-hook.sh
 ```
 
-3. Add to settings.json with appropriate matcher and event
+3. 在settings.json中添加适当的匹配器和事件
 
-## Security Considerations
+## 安全注意事项
 
-- Hooks execute arbitrary shell commands
-- Always validate and sanitize inputs
-- Use full paths to avoid PATH manipulation
-- Be careful with file operations
-- Test hooks thoroughly before deployment
+- 钩子执行任意shell命令
+- 始终验证和清理输入
+- 使用完整路径避免PATH操作
+- 对文件操作需谨慎
+- 部署前彻底测试钩子
 
-## Debugging Hooks
+## 调试钩子
 
-Run Claude Code with debug flag to see hook execution:
+使用调试标志运行Claude Code以查看钩子执行情况：
+
 ```bash
 claude --debug
 ```
 
-This will show:
-- Which hooks are triggered
-- Input/output for each hook
-- Any errors or issues
+这将显示：
 
-## Integration with Subagents
+- 触发了哪些钩子
+- 每个钩子的输入/输出
+- 任何错误或问题
 
-The example configuration includes a hook that integrates with the validation-gates subagent, demonstrating how hooks and subagents can work together for a more robust development workflow.
+## 与子代理集成
+
+示例配置包含一个与validation-gates子代理集成的钩子，展示了钩子和子代理如何协同工作，实现更健壮的开发工作流程。

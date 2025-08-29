@@ -1,33 +1,30 @@
-## Installing Claude Code on Windows (with WSL)
+## 在 Windows 上安装 Claude Code（使用 WSL）
 
-Claude Code only supports Linux and MacOS by default. To use Claude Code with Windows, you can use WSL.
+Claude Code 默认仅支持 Linux 和 MacOS。要在 Windows 上使用 Claude Code，您可以使用 WSL。
 
-1. Go to the Microsoft Store
-
-2. Search for Ubuntu WSL and install
-
-3. Open WSL in a terminal
-
-4. Run the following commands (this follows best security practices):
+1. 前往 Microsoft Store
+2. 搜索 Ubuntu WSL 并安装
+3. 在终端中打开 WSL
+4. 运行以下命令（遵循最佳安全实践）：
 
 ```bash
-# First, save a list of your existing global packages for later migration
+# 首先，保存现有全局包列表以便后续迁移
 npm list -g --depth=0 > ~/npm-global-packages.txt
 
-# Create a directory for your global packages
+# 创建全局包目录
 mkdir -p ~/.npm-global
 
-# Configure npm to use the new directory path
+# 配置 npm 使用新的目录路径
 npm config set prefix ~/.npm-global
 
-# Note: Replace ~/.bashrc with ~/.zshrc, ~/.profile, or other appropriate file for your shell
+# 注意：将 ~/.bashrc 替换为 ~/.zshrc、~/.profile 或其他适用于您 shell 的文件
 echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
 
-# Apply the new PATH setting
+# 应用新的 PATH 设置
 source ~/.bashrc
 
-# Now reinstall Claude Code in the new location
+# 现在在新位置重新安装 Claude Code
 npm install -g @anthropic-ai/claude-code
 ```
 
-5. Now within your IDEs you can open a terminal with Ctrl + J (also use this hotkey to toggle it off) and you can click on the down arrow next to the plus to open an Ubuntu (WSL) terminal where you can run the "claude" command to start Claude Code.
+5. 现在，在您的 IDE 中可以通过 Ctrl + J 打开终端（也可使用此快捷键关闭），点击加号旁边的下拉箭头以打开 Ubuntu (WSL) 终端，然后运行 "claude" 命令启动 Claude Code。

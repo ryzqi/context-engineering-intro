@@ -1,14 +1,16 @@
-# Initialize parallel git worktree directories for parallel Claude Code agents
+# 初始化并行 git worktree 目录以支持并行 Claude Code 代理
 
-## Variables
+## 变量
+
 FEATURE_NAME: $ARGUMENTS
 NUMBER_OF_PARALLEL_WORKTREES: $ARGUMENTS
 
-## Execute these commands
-> Execute the loop in parallel with the Batch and Task tool
+## 执行以下命令
 
-- create a new dir `trees/`
-- for i in NUMBER_OF_PARALLEL_WORKTREES
-  - RUN `git worktree add -b FEATURE_NAME-i ./trees/FEATURE_NAME-i`
-  - RUN `cd trees/FEATURE_NAME-i`, `git ls-files` to validate
-- RUN `git worktree list` to verify all trees were created properly
+> 使用 Batch 和 Task 工具并行执行循环
+
+- 创建新目录 `trees/`
+- 对于 NUMBER_OF_PARALLEL_WORKTREES 中的每个 i
+  - 执行 `git worktree add -b FEATURE_NAME-i ./trees/FEATURE_NAME-i`
+  - 执行 `cd trees/FEATURE_NAME-i`, `git ls-files` 进行验证
+- 执行 `git worktree list` 以验证所有目录树是否正确创建

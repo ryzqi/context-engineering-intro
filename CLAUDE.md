@@ -1,59 +1,65 @@
-### 🔄 Project Awareness & Context
-- **Always read `PLANNING.md`** at the start of a new conversation to understand the project's architecture, goals, style, and constraints.
-- **Check `TASK.md`** before starting a new task. If the task isn’t listed, add it with a brief description and today's date.
-- **Use consistent naming conventions, file structure, and architecture patterns** as described in `PLANNING.md`.
-- **Use venv_linux** (the virtual environment) whenever executing Python commands, including for unit tests.
+### 🔄 项目认知与上下文
 
-### 🧱 Code Structure & Modularity
-- **Never create a file longer than 500 lines of code.** If a file approaches this limit, refactor by splitting it into modules or helper files.
-- **Organize code into clearly separated modules**, grouped by feature or responsibility.
-  For agents this looks like:
-    - `agent.py` - Main agent definition and execution logic 
-    - `tools.py` - Tool functions used by the agent 
-    - `prompts.py` - System prompts
-- **Use clear, consistent imports** (prefer relative imports within packages).
-- **Use clear, consistent imports** (prefer relative imports within packages).
-- **Use python_dotenv and load_env()** for environment variables.
+- **在新对话开始时，始终阅读 `PLANNING.md`** 以了解项目的架构、目标、风格和约束。
+- **开始新任务前检查 `TASK.md`**。如果任务未列出，请添加简要描述及今日日期。
+- **使用一致的命名规范、文件结构和架构模式**，如 `PLANNING.md` 中所述。
+- **使用 venv_linux**（虚拟环境）执行所有 Python 命令，包括单元测试。
 
-### 🧪 Testing & Reliability
-- **Always create Pytest unit tests for new features** (functions, classes, routes, etc).
-- **After updating any logic**, check whether existing unit tests need to be updated. If so, do it.
-- **Tests should live in a `/tests` folder** mirroring the main app structure.
-  - Include at least:
-    - 1 test for expected use
-    - 1 edge case
-    - 1 failure case
+### 🧱 代码结构与模块化
 
-### ✅ Task Completion
-- **Mark completed tasks in `TASK.md`** immediately after finishing them.
-- Add new sub-tasks or TODOs discovered during development to `TASK.md` under a “Discovered During Work” section.
+- **永远不要创建超过500行代码的文件。** 当文件接近此限制时，通过拆分为模块或辅助文件进行重构。
+- **将代码组织为清晰分离的模块**，按功能或职责分组。
+  代理的结构如下：
+  - `agent.py` - 主代理定义与执行逻辑
+  - `tools.py` - 代理使用的工具函数
+  - `prompts.py` - 系统提示
+- **使用清晰、一致的导入**（优先使用包内的相对导入）。
+- **使用 python_dotenv 和 load_env()** 管理环境变量。
 
-### 📎 Style & Conventions
-- **Use Python** as the primary language.
-- **Follow PEP8**, use type hints, and format with `black`.
-- **Use `pydantic` for data validation**.
-- Use `FastAPI` for APIs and `SQLAlchemy` or `SQLModel` for ORM if applicable.
-- Write **docstrings for every function** using the Google style:
+### 🧪 测试与可靠性
+
+- **始终为新功能创建 Pytest 单元测试**（函数、类、路由等）。
+- **更新任何逻辑后**，检查现有单元测试是否需要更新，如有则进行更新。
+- **测试应放在 `/tests` 文件夹中**，与主应用程序结构保持一致。
+  - 至少包含：
+    - 1个预期使用测试
+    - 1个边界情况
+    - 1个失败情况
+
+### ✅ 任务完成
+
+- **完成任务后立即在 `TASK.md` 中标记**。
+- 将开发过程中发现的新子任务或TODO添加到 `TASK.md` 的"开发期间发现"部分。
+
+### 📎 风格与规范
+
+- **使用 Python** 作为主要语言。
+- **遵循 PEP8**，使用类型提示，并用 `black` 格式化。
+- **使用 `pydantic` 进行数据验证**。
+- 使用 `FastAPI` 构建API，适用时使用 `SQLAlchemy` 或 `SQLModel` 作为ORM。
+- 为每个函数编写 **Google风格的文档字符串**：
   ```python
   def example():
       """
-      Brief summary.
+      简要概述。
 
       Args:
-          param1 (type): Description.
+          param1 (type): 描述。
 
       Returns:
-          type: Description.
+          type: 描述。
       """
   ```
 
-### 📚 Documentation & Explainability
-- **Update `README.md`** when new features are added, dependencies change, or setup steps are modified.
-- **Comment non-obvious code** and ensure everything is understandable to a mid-level developer.
-- When writing complex logic, **add an inline `# Reason:` comment** explaining the why, not just the what.
+### 📚 文档与可解释性
 
-### 🧠 AI Behavior Rules
-- **Never assume missing context. Ask questions if uncertain.**
-- **Never hallucinate libraries or functions** – only use known, verified Python packages.
-- **Always confirm file paths and module names** exist before referencing them in code or tests.
-- **Never delete or overwrite existing code** unless explicitly instructed to or if part of a task from `TASK.md`.
+- **添加新功能、依赖项变更或修改设置步骤时，更新 `README.md`**。
+- **注释非显而易见的代码**，确保中级开发者能够理解所有内容。
+- 编写复杂逻辑时，**添加内联 `# Reason:` 注释**，解释原因而不仅是内容。
+
+### 🧠 AI 行为规则
+
+- **切勿假设缺失上下文。如有疑问，请提问。**
+- **切勿虚构库或函数**——仅使用已知且经过验证的 Python 包。
+- **引用代码或测试前，始终确认文件路径和模块名称存在。**
+- **除非明确指示或属于 `TASK.md` 中的任务，否则切勿删除或覆盖现有代码。**

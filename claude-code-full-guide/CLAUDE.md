@@ -1,38 +1,38 @@
 # CLAUDE.md
 
-This file provides comprehensive guidance to Claude Code when working with Python code in this repository.
+本文档为 Claude Code 在此仓库中处理 Python 代码提供全面指导。
 
-## Core Development Philosophy
+## 核心开发哲学
 
 ### KISS (Keep It Simple, Stupid)
 
-Simplicity should be a key goal in design. Choose straightforward solutions over complex ones whenever possible. Simple solutions are easier to understand, maintain, and debug.
+简洁应该是设计中的关键目标。在可能的情况下，选择简单直接的解决方案而非复杂的方案。简单方案更易于理解、维护和调试。
 
 ### YAGNI (You Aren't Gonna Need It)
 
-Avoid building functionality on speculation. Implement features only when they are needed, not when you anticipate they might be useful in the future.
+避免基于推测构建功能。仅在需要时才实现功能，而不是在预见到将来可能有用时。
 
-### Design Principles
+### 设计原则
 
-- **Dependency Inversion**: High-level modules should not depend on low-level modules. Both should depend on abstractions.
-- **Open/Closed Principle**: Software entities should be open for extension but closed for modification.
-- **Single Responsibility**: Each function, class, and module should have one clear purpose.
-- **Fail Fast**: Check for potential errors early and raise exceptions immediately when issues occur.
+- **依赖倒置**：高层模块不应依赖于低层模块。两者都应该依赖于抽象。
+- **开闭原则**：软件实体应该对扩展开放，对修改关闭。
+- **单一职责**：每个函数、类和模块应该有一个明确的目的。
+- **快速失败**：尽早检查潜在错误，并在出现问题时立即引发异常。
 
-## 🧱 Code Structure & Modularity
+## 🧱 代码结构与模块化
 
-### File and Function Limits
+### 文件和函数限制
 
-- **Never create a file longer than 500 lines of code**. If approaching this limit, refactor by splitting into modules.
-- **Functions should be under 50 lines** with a single, clear responsibility.
-- **Classes should be under 100 lines** and represent a single concept or entity.
-- **Organize code into clearly separated modules**, grouped by feature or responsibility.
-- **Line lenght should be max 100 characters** ruff rule in pyproject.toml
-- **Use venv_linux** (the virtual environment) whenever executing Python commands, including for unit tests.
+- **永远不要创建超过500行代码的文件**。如果接近此限制，请通过拆分为模块进行重构。
+- **函数应少于50行**，具有单一明确的职责。
+- **类应少于100行**，表示单一概念或实体。
+- **将代码组织成明确分离的模块**，按功能或职责分组。
+- **行长度应限制在100个字符**，pyproject.toml中的ruff规则
+- **执行Python命令时始终使用venv_linux**（虚拟环境），包括单元测试。
 
-### Project Architecture
+### 项目架构
 
-Follow strict vertical slice architecture with tests living next to the code they test:
+遵循严格的垂直切片架构，测试与测试代码相邻：
 
 ```
 src/project/
@@ -42,7 +42,7 @@ src/project/
         test_main.py
     conftest.py
 
-    # Core modules
+    # 核心模块
     database/
         __init__.py
         connection.py
@@ -59,7 +59,7 @@ src/project/
             test_authentication.py
             test_authorization.py
 
-    # Feature slices
+    # 功能切片
     features/
         user_management/
             __init__.py
@@ -78,84 +78,84 @@ src/project/
                 test_gateway.py
 ```
 
-## 🛠️ Development Environment
+## 🛠️ 开发环境
 
-### UV Package Management
+### UV 包管理
 
-This project uses UV for blazing-fast Python package and environment management.
+本项目使用 UV 进行快速 Python 包和环境管理。
 
 ```bash
-# Install UV (if not already installed)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# 安装 UV (如果尚未安装)
+curl -LsSf https://astral.sh/uv/install.sh   | sh
 
-# Create virtual environment
+# 创建虚拟环境
 uv venv
 
-# Sync dependencies
+# 同步依赖
 uv sync
 
-# Add a package ***NEVER UPDATE A DEPENDENCY DIRECTLY IN PYPROJECT.toml***
-# ALWAYS USE UV ADD
+# 添加包 ***永远不要直接在 pyproject.toml 中更新依赖***
+# 始终使用 UV ADD
 uv add requests
 
-# Add development dependency
+# 添加开发依赖
 uv add --dev pytest ruff mypy
 
-# Remove a package
+# 移除包
 uv remove requests
 
-# Run commands in the environment
+# 在环境中运行命令
 uv run python script.py
 uv run pytest
 uv run ruff check .
 
-# Install specific Python version
+# 安装特定 Python 版本
 uv python install 3.12
 ```
 
-### Development Commands
+### 开发命令
 
 ```bash
-# Run all tests
+# 运行所有测试
 uv run pytest
 
-# Run specific tests with verbose output
+# 使用详细输出运行特定测试
 uv run pytest tests/test_module.py -v
 
-# Run tests with coverage
+# 使用覆盖率运行测试
 uv run pytest --cov=src --cov-report=html
 
-# Format code
+# 格式化代码
 uv run ruff format .
 
-# Check linting
+# 检查代码风格
 uv run ruff check .
 
-# Fix linting issues automatically
+# 自动修复代码风格问题
 uv run ruff check --fix .
 
-# Type checking
+# 类型检查
 uv run mypy src/
 
-# Run pre-commit hooks
+# 运行 pre-commit 钩子
 uv run pre-commit run --all-files
 ```
 
-## 📋 Style & Conventions
+## 📋 风格与约定
 
-### Python Style Guide
+### Python 风格指南
 
-- **Follow PEP8** with these specific choices:
-  - Line length: 100 characters (set by Ruff in pyproject.toml)
-  - Use double quotes for strings
-  - Use trailing commas in multi-line structures
-- **Always use type hints** for function signatures and class attributes
-- **Format with `ruff format`** (faster alternative to Black)
-- **Use `pydantic` v2** for data validation and settings management
+- **遵循 PEP8** 并采用以下特定选择：
+  - 行长度：100个字符（由 pyproject.toml 中的 Ruff 设置）
+  - 字符串使用双引号
+  - 多行结构中使用尾随逗号
+- **始终为函数签名和类属性使用类型提示**
+- **使用 `ruff format` 格式化**（比 Black 更快的替代方案）
+- **使用 `pydantic` v2** 进行数据验证和设置管理
 
-### Docstring Standards
+### 文档字符串标准
 
-Use Google-style docstrings for all public functions, classes, and modules:
+为所有公共函数、类和模块使用 Google 风格文档字符串：
 
 ```python
 def calculate_discount(
@@ -164,19 +164,19 @@ def calculate_discount(
     min_amount: Decimal = Decimal("0.01")
 ) -> Decimal:
     """
-    Calculate the discounted price for a product.
+    计算产品折扣价格。
 
     Args:
-        price: Original price of the product
-        discount_percent: Discount percentage (0-100)
-        min_amount: Minimum allowed final price
+        price: 产品原始价格
+        discount_percent: 折扣百分比 (0-100)
+        min_amount: 最终价格的最低允许值
 
     Returns:
-        Final price after applying discount
+        应用折扣后的最终价格
 
     Raises:
-        ValueError: If discount_percent is not between 0 and 100
-        ValueError: If final price would be below min_amount
+        ValueError: 如果 discount_percent 不在 0 和 100 之间
+        ValueError: 如果最终价格低于 min_amount
 
     Example:
         >>> calculate_discount(Decimal("100"), 20)
@@ -184,35 +184,35 @@ def calculate_discount(
     """
 ```
 
-### Naming Conventions
+### 命名约定
 
-- **Variables and functions**: `snake_case`
-- **Classes**: `PascalCase`
-- **Constants**: `UPPER_SNAKE_CASE`
-- **Private attributes/methods**: `_leading_underscore`
-- **Type aliases**: `PascalCase`
-- **Enum values**: `UPPER_SNAKE_CASE`
+- **变量和函数**：`snake_case`
+- **类**：`PascalCase`
+- **常量**：`UPPER_SNAKE_CASE`
+- **私有属性/方法**：`_leading_underscore`
+- **类型别名**：`PascalCase`
+- **枚举值**：`UPPER_SNAKE_CASE`
 
-## 🧪 Testing Strategy
+## 🧪 测试策略
 
-### Test-Driven Development (TDD)
+### 测试驱动开发 (TDD)
 
-1. **Write the test first** - Define expected behavior before implementation
-2. **Watch it fail** - Ensure the test actually tests something
-3. **Write minimal code** - Just enough to make the test pass
-4. **Refactor** - Improve code while keeping tests green
-5. **Repeat** - One test at a time
+1. **先编写测试** - 在实现之前定义预期行为
+2. **确保测试失败** - 确保测试确实测试了某些内容
+3. **编写最少代码** - 仅编写使测试通过的代码
+4. **重构** - 在保持测试通过的同时改进代码
+5. **重复** - 一次一个测试
 
-### Testing Best Practices
+### 测试最佳实践
 
 ```python
-# Always use pytest fixtures for setup
+# 始终对设置使用 pytest fixtures
 import pytest
 from datetime import datetime
 
 @pytest.fixture
 def sample_user():
-    """Provide a sample user for testing."""
+    """为测试提供示例用户。"""
     return User(
         id=123,
         name="Test User",
@@ -220,42 +220,42 @@ def sample_user():
         created_at=datetime.now()
     )
 
-# Use descriptive test names
+# 使用描述性测试名称
 def test_user_can_update_email_when_valid(sample_user):
-    """Test that users can update their email with valid input."""
+    """测试用户可以使用有效输入更新其电子邮件。"""
     new_email = "newemail@example.com"
     sample_user.update_email(new_email)
     assert sample_user.email == new_email
 
-# Test edge cases and error conditions
+# 测试边界情况和错误条件
 def test_user_update_email_fails_with_invalid_format(sample_user):
-    """Test that invalid email formats are rejected."""
+    """测试拒绝无效的电子邮件格式。"""
     with pytest.raises(ValidationError) as exc_info:
         sample_user.update_email("not-an-email")
     assert "Invalid email format" in str(exc_info.value)
 ```
 
-### Test Organization
+### 测试组织
 
-- Unit tests: Test individual functions/methods in isolation
-- Integration tests: Test component interactions
-- End-to-end tests: Test complete user workflows
-- Keep test files next to the code they test
-- Use `conftest.py` for shared fixtures
-- Aim for 80%+ code coverage, but focus on critical paths
+- 单元测试：隔离测试单个函数/方法
+- 集成测试：测试组件交互
+- 端到端测试：测试完整用户工作流程
+- 将测试文件放在测试代码旁边
+- 使用 `conftest.py` 用于共享 fixtures
+- 目标是 80%+ 代码覆盖率，但关注关键路径
 
-## 🚨 Error Handling
+## 🚨 错误处理
 
-### Exception Best Practices
+### 异常最佳实践
 
 ```python
-# Create custom exceptions for your domain
+# 为您的领域创建自定义异常
 class PaymentError(Exception):
-    """Base exception for payment-related errors."""
+    """与支付相关的错误的基础异常。"""
     pass
 
 class InsufficientFundsError(PaymentError):
-    """Raised when account has insufficient funds."""
+    """当账户资金不足时引发。"""
     def __init__(self, required: Decimal, available: Decimal):
         self.required = required
         self.available = available
@@ -263,7 +263,7 @@ class InsufficientFundsError(PaymentError):
             f"Insufficient funds: required {required}, available {available}"
         )
 
-# Use specific exception handling
+# 使用特定的异常处理
 try:
     process_payment(amount)
 except InsufficientFundsError as e:
@@ -273,12 +273,12 @@ except PaymentError as e:
     logger.error(f"Payment error: {e}")
     return PaymentResult(success=False, reason="payment_error")
 
-# Use context managers for resource management
+# 使用上下文管理器管理资源
 from contextlib import contextmanager
 
 @contextmanager
 def database_transaction():
-    """Provide a transactional scope for database operations."""
+    """为数据库操作提供事务范围。"""
     conn = get_connection()
     trans = conn.begin_transaction()
     try:
@@ -291,13 +291,13 @@ def database_transaction():
         conn.close()
 ```
 
-### Logging Strategy
+### 日志策略
 
 ```python
 import logging
 from functools import wraps
 
-# Configure structured logging
+# 配置结构化日志
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -305,7 +305,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# Log function entry/exit for debugging
+# 记录函数进入/退出以进行调试
 def log_execution(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -320,16 +320,16 @@ def log_execution(func):
     return wrapper
 ```
 
-## 🔧 Configuration Management
+## 🔧 配置管理
 
-### Environment Variables and Settings
+### 环境变量和设置
 
 ```python
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 class Settings(BaseSettings):
-    """Application settings with validation."""
+    """具有验证的应用程序设置。"""
     app_name: str = "MyApp"
     debug: bool = False
     database_url: str
@@ -344,16 +344,16 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-    """Get cached settings instance."""
+    """获取缓存的设置实例。"""
     return Settings()
 
-# Usage
+# 使用
 settings = get_settings()
 ```
 
-## 🏗️ Data Models and Validation
+## 🏗️ 数据模型和验证
 
-### Example Pydantic Models strict with pydantic v2
+### Pydantic 模型示例 (使用 pydantic v2 严格模式)
 
 ```python
 from pydantic import BaseModel, Field, validator, EmailStr
@@ -362,7 +362,7 @@ from typing import Optional, List
 from decimal import Decimal
 
 class ProductBase(BaseModel):
-    """Base product model with common fields."""
+    """具有公共字段的基本产品模型。"""
     name: str = Field(..., min_length=1, max_length=255)
     description: Optional[str] = None
     price: Decimal = Field(..., gt=0, decimal_places=2)
@@ -382,11 +382,11 @@ class ProductBase(BaseModel):
         }
 
 class ProductCreate(ProductBase):
-    """Model for creating new products."""
+    """用于创建新产品的模型。"""
     pass
 
 class ProductUpdate(BaseModel):
-    """Model for updating products - all fields optional."""
+    """用于更新产品的模型 - 所有字段可选。"""
     name: Optional[str] = Field(None, min_length=1, max_length=255)
     description: Optional[str] = None
     price: Optional[Decimal] = Field(None, gt=0, decimal_places=2)
@@ -394,31 +394,31 @@ class ProductUpdate(BaseModel):
     tags: Optional[List[str]] = None
 
 class Product(ProductBase):
-    """Complete product model with database fields."""
+    """包含数据库字段的完整产品模型。"""
     id: int
     created_at: datetime
     updated_at: datetime
     is_active: bool = True
 
     class Config:
-        from_attributes = True  # Enable ORM mode
+        from_attributes = True  # 启用 ORM 模式
 ```
 
-## 🔄 Git Workflow
+## 🔄 Git 工作流程
 
-### Branch Strategy
+### 分支策略
 
-- `main` - Production-ready code
-- `develop` - Integration branch for features
-- `feature/*` - New features
-- `fix/*` - Bug fixes
-- `docs/*` - Documentation updates
-- `refactor/*` - Code refactoring
-- `test/*` - Test additions or fixes
+- `main` - 可用于生产的代码
+- `develop` - 功能集成分支
+- `feature/*` - 新功能
+- `fix/*` - Bug 修复
+- `docs/*` - 文档更新
+- `refactor/*` - 代码重构
+- `test/*` - 测试添加或修复
 
-### Commit Message Format
+### 提交信息格式
 
-Never include claude code, or written by claude code in commit messages
+提交信息中永远不要包含 claude code 或由 claude code 编写
 
 ```
 <type>(<scope>): <subject>
@@ -426,128 +426,131 @@ Never include claude code, or written by claude code in commit messages
 <body>
 
 <footer>
-``
-Types: feat, fix, docs, style, refactor, test, chore
-
-Example:
 ```
 
-feat(auth): add two-factor authentication
+类型：feat, fix, docs, style, refactor, test, chore
 
-- Implement TOTP generation and validation
-- Add QR code generation for authenticator apps
-- Update user model with 2FA fields
+示例：
+
+```
+
+feat(auth): 添加双因素认证
+
+- 实现 TOTP 生成和验证
+- 为身份验证应用程序添加 QR 码生成
+- 使用 2FA 字段更新用户模型
 
 Closes #123
 
-````
+```
 
-## 🗄️ Database Naming Standards
+## 🗄️ 数据库命名标准
 
-### Entity-Specific Primary Keys
-All database tables use entity-specific primary keys for clarity and consistency:
+### 实体特定主键
+
+所有数据库表使用实体特定主键以确保清晰和一致性：
 
 ```sql
--- ✅ STANDARDIZED: Entity-specific primary keys
+-- ✅ 标准化：实体特定主键
 sessions.session_id UUID PRIMARY KEY
 leads.lead_id UUID PRIMARY KEY
 messages.message_id UUID PRIMARY KEY
 daily_metrics.daily_metric_id UUID PRIMARY KEY
 agencies.agency_id UUID PRIMARY KEY
-````
+```
 
-### Field Naming Conventions
+### 字段命名约定
 
 ```sql
--- Primary keys: {entity}_id
+-- 主键：{entity}_id
 session_id, lead_id, message_id
 
--- Foreign keys: {referenced_entity}_id
+-- 外键：{referenced_entity}_id
 session_id REFERENCES sessions(session_id)
 agency_id REFERENCES agencies(agency_id)
 
--- Timestamps: {action}_at
+-- 时间戳：{action}_at
 created_at, updated_at, started_at, expires_at
 
--- Booleans: is_{state}
+-- 布尔值：is_{state}
 is_connected, is_active, is_qualified
 
--- Counts: {entity}_count
+-- 计数：{entity}_count
 message_count, lead_count, notification_count
 
--- Durations: {property}_{unit}
+-- 持续时间：{property}_{unit}
 duration_seconds, timeout_minutes
 ```
 
-### Repository Pattern Auto-Derivation
+### 仓库模式自动推导
 
-The enhanced BaseRepository automatically derives table names and primary keys:
+增强的 BaseRepository 自动推导表名和主键：
 
 ```python
-# ✅ STANDARDIZED: Convention-based repositories
+# ✅ 标准化：基于约定的仓库
 class LeadRepository(BaseRepository[Lead]):
     def __init__(self):
-        super().__init__()  # Auto-derives "leads" and "lead_id"
+        super().__init__()  # 自动推导 "leads" 和 "lead_id"
 
 class SessionRepository(BaseRepository[AvatarSession]):
     def __init__(self):
-        super().__init__()  # Auto-derives "sessions" and "session_id"
+        super().__init__()  # 自动推导 "sessions" 和 "session_id"
 ```
 
-**Benefits**:
+**优点**:
 
-- ✅ Self-documenting schema
-- ✅ Clear foreign key relationships
-- ✅ Eliminates repository method overrides
-- ✅ Consistent with entity naming patterns
+- ✅ 自我文档化的模式
+- ✅ 清晰的外键关系
+- ✅ 消除仓库方法重写
+- ✅ 与实体命名模式一致
 
-### Model-Database Alignment
+### 模型-数据库对齐
 
-Models mirror database fields exactly to eliminate field mapping complexity:
+模型与数据库字段完全匹配，以消除字段映射复杂性：
 
 ```python
-# ✅ STANDARDIZED: Models mirror database exactly
+# ✅ 标准化：模型与数据库完全匹配
 class Lead(BaseModel):
-    lead_id: UUID = Field(default_factory=uuid4)  # Matches database field
-    session_id: UUID                               # Matches database field
-    agency_id: str                                 # Matches database field
+    lead_id: UUID = Field(default_factory=uuid4)  # 匹配数据库字段
+    session_id: UUID                               # 匹配数据库字段
+    agency_id: str                                 # 匹配数据库字段
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     model_config = ConfigDict(
         use_enum_values=True,
         populate_by_name=True,
-        alias_generator=None  # Use exact field names
+        alias_generator=None  # 使用精确字段名
     )
 ```
 
-### API Route Standards
+### API 路由标准
 
 ```python
-# ✅ STANDARDIZED: RESTful with consistent parameter naming
+# ✅ 标准化：RESTful 且参数命名一致
 router = APIRouter(prefix="/api/v1/leads", tags=["leads"])
 
 @router.get("/{lead_id}")           # GET /api/v1/leads/{lead_id}
 @router.put("/{lead_id}")           # PUT /api/v1/leads/{lead_id}
 @router.delete("/{lead_id}")        # DELETE /api/v1/leads/{lead_id}
 
-# Sub-resources
+# 子资源
 @router.get("/{lead_id}/messages")  # GET /api/v1/leads/{lead_id}/messages
 @router.get("/agency/{agency_id}")  # GET /api/v1/leads/agency/{agency_id}
 ```
 
-For complete naming standards, see [NAMING_CONVENTIONS.md](./NAMING_CONVENTIONS.md).
+有关完整命名标准，请参阅 [NAMING_CONVENTIONS.md](./NAMING_CONVENTIONS.md)。
 
-## 📝 Documentation Standards
+## 📝 文档标准
 
-### Code Documentation
+### 代码文档
 
-- Every module should have a docstring explaining its purpose
-- Public functions must have complete docstrings
-- Complex logic should have inline comments with `# Reason:` prefix
-- Keep README.md updated with setup instructions and examples
-- Maintain CHANGELOG.md for version history
+- 每个模块应有解释其用途的文档字符串
+- 公共函数必须有完整的文档字符串
+- 复杂逻辑应有带 `# Reason:` 前缀的内联注释
+- 保持 README.md 更新包含设置说明和示例
+- 维护 CHANGELOG.md 用于版本历史
 
-### API Documentation
+### API 文档
 
 ```python
 from fastapi import APIRouter, HTTPException, status
@@ -558,8 +561,8 @@ router = APIRouter(prefix="/products", tags=["products"])
 @router.get(
     "/",
     response_model=List[Product],
-    summary="List all products",
-    description="Retrieve a paginated list of all active products"
+    summary="列出所有产品",
+    description="检索所有活动产品的分页列表"
 )
 async def list_products(
     skip: int = 0,
@@ -567,27 +570,27 @@ async def list_products(
     category: Optional[str] = None
 ) -> List[Product]:
     """
-    Retrieve products with optional filtering.
+    检索带有可选过滤的产品。
 
-    - **skip**: Number of products to skip (for pagination)
-    - **limit**: Maximum number of products to return
-    - **category**: Filter by product category
+    - **skip**: 要跳过的项目数（用于分页）
+    - **limit**: 要返回的最大项目数
+    - **category**: 按产品类别过滤
     """
-    # Implementation here
+    # 实现代码
 ```
 
-## 🚀 Performance Considerations
+## 🚀 性能考虑
 
-### Optimization Guidelines
+### 优化指南
 
-- Profile before optimizing - use `cProfile` or `py-spy`
-- Use `lru_cache` for expensive computations
-- Prefer generators for large datasets
-- Use `asyncio` for I/O-bound operations
-- Consider `multiprocessing` for CPU-bound tasks
-- Cache database queries appropriately
+- 优化前先进行性能分析 - 使用 `cProfile` 或 `py-spy`
+- 使用 `lru_cache` 处理昂贵的计算
+- 对大型数据集优先使用生成器
+- 对 I/O 密集型操作使用 `asyncio`
+- 对 CPU 密集型任务考虑 `multiprocessing`
+- 适当地缓存数据库查询
 
-### Example Optimization
+### 优化示例
 
 ```python
 from functools import lru_cache
@@ -596,32 +599,32 @@ from typing import AsyncIterator
 
 @lru_cache(maxsize=1000)
 def expensive_calculation(n: int) -> int:
-    """Cache results of expensive calculations."""
-    # Complex computation here
+    """缓存昂贵计算的结果。"""
+    # 复杂计算
     return result
 
 async def process_large_dataset() -> AsyncIterator[dict]:
-    """Process large dataset without loading all into memory."""
+    """处理大型数据集而不将所有内容加载到内存中。"""
     async with aiofiles.open('large_file.json', mode='r') as f:
         async for line in f:
             data = json.loads(line)
-            # Process and yield each item
+            # 处理并逐个返回项目
             yield process_item(data)
 ```
 
-## 🛡️ Security Best Practices
+## 🛡️ 安全最佳实践
 
-### Security Guidelines
+### 安全指南
 
-- Never commit secrets - use environment variables
-- Validate all user input with Pydantic
-- Use parameterized queries for database operations
-- Implement rate limiting for APIs
-- Keep dependencies updated with `uv`
-- Use HTTPS for all external communications
-- Implement proper authentication and authorization
+- 永远不要提交机密 - 使用环境变量
+- 使用 Pydantic 验证所有用户输入
+- 对数据库操作使用参数化查询
+- 为 API 实现速率限制
+- 使用 `uv` 保持依赖项更新
+- 对所有外部通信使用 HTTPS
+- 实现适当的认证和授权
 
-### Example Security Implementation
+### 安全实现示例
 
 ```python
 from passlib.context import CryptContext
@@ -630,50 +633,50 @@ import secrets
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str) -> str:
-    """Hash password using bcrypt."""
+    """使用 bcrypt 哈希密码。"""
     return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash."""
+    """验证密码与其哈希值。"""
     return pwd_context.verify(plain_password, hashed_password)
 
 def generate_secure_token(length: int = 32) -> str:
-    """Generate a cryptographically secure random token."""
+    """生成加密安全的随机令牌。"""
     return secrets.token_urlsafe(length)
 ```
 
-## 🔍 Debugging Tools
+## 🔍 调试工具
 
-### Debugging Commands
+### 调试命令
 
 ```bash
-# Interactive debugging with ipdb
+# 使用 ipdb 进行交互式调试
 uv add --dev ipdb
-# Add breakpoint: import ipdb; ipdb.set_trace()
+# 添加断点：import ipdb; ipdb.set_trace()
 
-# Memory profiling
+# 内存分析
 uv add --dev memory-profiler
 uv run python -m memory_profiler script.py
 
-# Line profiling
+# 行分析
 uv add --dev line-profiler
-# Add @profile decorator to functions
+# 为函数添加 @profile 装饰器
 
-# Debug with rich traceback
+# 使用 rich traceback 调试
 uv add --dev rich
-# In code: from rich.traceback import install; install()
+# 在代码中：from rich.traceback import install; install()
 ```
 
-## 📊 Monitoring and Observability
+## 📊 监控和可观测性
 
-### Structured Logging
+### 结构化日志
 
 ```python
 import structlog
 
 logger = structlog.get_logger()
 
-# Log with context
+# 使用上下文记录日志
 logger.info(
     "payment_processed",
     user_id=user.id,
@@ -683,77 +686,77 @@ logger.info(
 )
 ```
 
-## 📚 Useful Resources
+## 📚 有用资源
 
-### Essential Tools
+### 基本工具
 
-- UV Documentation: https://github.com/astral-sh/uv
-- Ruff: https://github.com/astral-sh/ruff
-- Pytest: https://docs.pytest.org/
-- Pydantic: https://docs.pydantic.dev/
-- FastAPI: https://fastapi.tiangolo.com/
+- UV 文档：https://github.com/astral-sh/uv
+- Ruff：https://github.com/astral-sh/ruff
+- Pytest：https://docs.pytest.org/
+- Pydantic：https://docs.pydantic.dev/
+- FastAPI：https://fastapi.tiangolo.com/
 
-### Python Best Practices
+### Python 最佳实践
 
-- PEP 8: https://pep8.org/
-- PEP 484 (Type Hints): https://www.python.org/dev/peps/pep-0484/
-- The Hitchhiker's Guide to Python: https://docs.python-guide.org/
+- PEP 8：https://pep8.org/
+- PEP 484 (类型提示)：https://www.python.org/dev/peps/pep-0484/
+- The Hitchhiker's Guide to Python：https://docs.python-guide.org/
 
-## ⚠️ Important Notes
+## ⚠️ 重要注意事项
 
-- **NEVER ASSUME OR GUESS** - When in doubt, ask for clarification
-- **Always verify file paths and module names** before use
-- **Keep CLAUDE.md updated** when adding new patterns or dependencies
-- **Test your code** - No feature is complete without tests
-- **Document your decisions** - Future developers (including yourself) will thank you
+- **永远不要假设或猜测** - 有疑问时，请寻求澄清
+- **在使用前始终验证文件路径和模块名称**
+- **在添加新模式或依赖项时更新 CLAUDE.md**
+- **测试您的代码** - 没有测试的功能是不完整的
+- **记录您的决策** - 未来的开发者（包括您自己）会感谢您
 
-## 🔍 Search Command Requirements
+## 🔍 搜索命令要求
 
-**CRITICAL**: Always use `rg` (ripgrep) instead of traditional `grep` and `find` commands:
+**关键**：始终使用 `rg` (ripgrep) 代替传统的 `grep` 和 `find` 命令：
 
 ```bash
-# ❌ Don't use grep
+# ❌ 不要使用 grep
 grep -r "pattern" .
 
-# ✅ Use rg instead
+# ✅ 使用 rg 代替
 rg "pattern"
 
-# ❌ Don't use find with name
+# ❌ 不要使用带有名称的 find
 find . -name "*.py"
 
-# ✅ Use rg with file filtering
+# ✅ 使用带有文件过滤的 rg
 rg --files | rg "\.py$"
-# or
+# 或
 rg --files -g "*.py"
 ```
 
-**Enforcement Rules:**
+**执行规则**：
 
 ```
 (
     r"^grep\b(?!.*\|)",
-    "Use 'rg' (ripgrep) instead of 'grep' for better performance and features",
+    "使用 'rg' (ripgrep) 代替 'grep' 以获得更好的性能和功能",
 ),
 (
     r"^find\s+\S+\s+-name\b",
-    "Use 'rg --files | rg pattern' or 'rg --files -g pattern' instead of 'find -name' for better performance",
+    "使用 'rg --files | rg pattern' 或 'rg --files -g pattern' 代替 'find -name' 以获得更好的性能",
 ),
 ```
 
-## 🚀 GitHub Flow Workflow Summary
+## 🚀 GitHub Flow 工作流程摘要
 
 main (protected) ←── PR ←── feature/your-feature
 ↓ ↑
 deploy development
 
-### Daily Workflow:
+### 日常工作流程：
 
 1. git checkout main && git pull origin main
 2. git checkout -b feature/new-feature
-3. Make changes + tests
+3. 进行更改 + 测试
 4. git push origin feature/new-feature
-5. Create PR → Review → Merge to main
+5. 创建 PR → 审查 → 合并到 main
 
 ---
 
-_This document is a living guide. Update it as the project evolves and new patterns emerge._
+_本文档是一份动态指南。随着项目发展和新模式出现，请更新它。_

@@ -1,27 +1,28 @@
 # Parallel Task Version Execution
 
-## Variables
+## 变量
+
 FEATURE_NAME: $ARGUMENTS
 PLAN_TO_EXECUTE: $ARGUMENTS
 NUMBER_OF_PARALLEL_WORKTREES: $ARGUMENTS
 
-## Instructions
+## 指令
 
-We're going to create NUMBER_OF_PARALLEL_WORKTREES new subagents that use the Task tool to create N versions of the same feature in parallel.
+我们将创建 NUMBER_OF_PARALLEL_WORKTREES 个新的子代理，这些子代理使用 Task 工具并行创建同一功能的 N 个版本。
 
-Be sure to read PLAN_TO_EXECUTE.
+务必阅读 PLAN_TO_EXECUTE。
 
-This enables use to concurrently build the same feature in parallel so we can test and validate each subagent's changes in isolation then pick the best changes.
+这使我们能够并行地在同一功能上进行构建，以便在隔离环境中测试和验证每个子代理的更改，然后选择最佳的更改。
 
-The first agent will run in trees/<FEATURE_NAME>-1/
-The second agent will run in trees/<FEATURE_NAME>-2/
+第一个代理将在 trees/<FEATURE_NAME>-1/ 中运行。
+第二个代理将在 trees/<FEATURE_NAME>-2/ 中运行。
 ...
-The last agent will run in trees/<FEATURE_NAME>-<NUMBER_OF_PARALLEL_WORKTREES>/
+最后一个代理将在 trees/<FEATURE_NAME>-<NUMBER_OF_PARALLEL_WORKTREES>/ 中运行。
 
-The code in trees/<FEATURE_NAME>-<i>/ will be identical to the code in the current branch. It will be setup and ready for you to build the feature end to end.
+trees/<FEATURE_NAME>-`<i>`/ 中的代码将与当前分支中的代码相同。它将被设置并准备好供您端到端地构建该功能。
 
-Each agent will independently implement the engineering plan detailed in PLAN_TO_EXECUTE in their respective workspace.
+每个代理将在各自的工作空间中独立实现 PLAN_TO_EXECUTE 中详细说明的工程计划。
 
-When the subagent completes it's work, have the subagent to report their final changes made in a comprehensive `RESULTS.md` file at the root of their respective workspace.
+当子代理完成工作后，让子代理在其各自工作空间的根目录中生成一个全面的 `RESULTS.md` 文件，报告最终的更改。
 
-Make sure agents don't run any tests or other code - focus on the code changes only.
+确保代理不运行任何测试或其他代码——仅专注于代码更改。
